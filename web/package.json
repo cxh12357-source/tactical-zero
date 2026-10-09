@@ -1,0 +1,22 @@
+{
+  "name": "tactical-zero",
+  "private": true,
+  "version": "4.0.0",
+  "scripts": {
+    "dev": "node server/index.mjs",
+    "test": "node scripts/build-mobile.cjs && node --test tests/weapon-supply.test.mjs tests/custom-match.test.mjs tests/startup.test.cjs tests/game.test.cjs tests/offline.test.cjs tests/field.test.cjs tests/multiplayer.test.mjs tests/client.test.mjs tests/arsenal.test.cjs tests/airdrop.test.mjs tests/operations.test.mjs tests/classes.test.mjs tests/operator-art.test.cjs tests/death-view.test.mjs tests/mobile.test.cjs tests/iphone.test.cjs tests/controls.test.cjs tests/building.test.cjs",
+    "start": "node server/index.mjs",
+    "check": "node scripts/check.cjs",
+    "build:mobile": "node scripts/build-mobile.cjs",
+    "build:iphone": "node scripts/build-iphone.cjs",
+    "validate:maps": "node scripts/validate-buildings.cjs",
+    "test:building": "node --test tests/building.test.cjs",
+    "test:browser": "node scripts/test-building-browser.cjs && node scripts/test-building-lifecycle.cjs && node scripts/test-building-mobile.cjs"
+  },
+  "dependencies": {
+    "ws": "8.21.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

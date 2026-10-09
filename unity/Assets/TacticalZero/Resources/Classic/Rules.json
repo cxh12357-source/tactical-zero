@@ -1,0 +1,1286 @@
+{
+  "roles": [
+    {
+      "id": "assault",
+      "name": "先锋",
+      "tag": "突击",
+      "mark": "尖",
+      "color": "#ffb078",
+      "skill": "疾速推进",
+      "cooldown": 22,
+      "duration": 5,
+      "detail": "移动速度 +30%，持续 5 秒。依然会受伤，适合绕侧和脱离交火。"
+    },
+    {
+      "id": "scout",
+      "name": "侦察兵",
+      "tag": "侦察",
+      "mark": "侦",
+      "color": "#76d9ef",
+      "skill": "脉冲探测",
+      "cooldown": 28,
+      "duration": 6,
+      "detail": "6 秒内提示 480 范围敌人的大致方位。可以隔墙探测，不显示位置或穿墙瞄准。"
+    },
+    {
+      "id": "medic",
+      "name": "医疗兵",
+      "tag": "支援",
+      "mark": "医",
+      "color": "#97edb8",
+      "skill": "急救脉冲",
+      "cooldown": 32,
+      "duration": 0,
+      "detail": "自己与 160 范围内、无遮挡的队友恢复 30 生命。不复活倒地者。"
+    },
+    {
+      "id": "engineer",
+      "name": "工程师",
+      "tag": "防护",
+      "mark": "工",
+      "color": "#ffd279",
+      "skill": "装甲加固",
+      "cooldown": 32,
+      "duration": 0,
+      "detail": "自己与 130 范围内、无遮挡的队友获得 35 临时护甲，最多保留 10 秒，不叠加。"
+    },
+    {
+      "id": "guardian",
+      "name": "重装卫士",
+      "tag": "防守",
+      "mark": "盾",
+      "color": "#a6b9fa",
+      "skill": "坚守阵地",
+      "cooldown": 28,
+      "duration": 5,
+      "detail": "受到的伤害减少 45%，持续 5 秒；期间移动速度降低 20%。"
+    },
+    {
+      "id": "marksman",
+      "name": "神射手",
+      "tag": "远射",
+      "mark": "狙",
+      "color": "#e6b0ec",
+      "skill": "专注射击",
+      "cooldown": 24,
+      "duration": 6,
+      "detail": "基础射击散射减少 65%，持续 6 秒；移动速度降低 35%。不改变瞄准方向或弹药。"
+    },
+    {
+      "id": "infiltrator",
+      "name": "渗透者",
+      "tag": "潜行",
+      "mark": "隐",
+      "color": "#a7d594",
+      "skill": "无声潜行",
+      "cooldown": 26,
+      "duration": 6,
+      "detail": "消除脚步声并提升 15% 移速，持续 6 秒。开火立即结束；仍能被视野和雷达发现。"
+    },
+    {
+      "id": "supplier",
+      "name": "补给官",
+      "tag": "后勤",
+      "mark": "补",
+      "color": "#e9c59e",
+      "skill": "弹药支援",
+      "cooldown": 38,
+      "duration": 0,
+      "detail": "自己与 160 范围内、无遮挡的队友，当前常规武器增加一个基础弹匣的备弹。不补空投枪或 AWP。"
+    }
+  ],
+  "weapons": [
+    {
+      "id": "USP",
+      "label": "USP",
+      "desc": "半自动手枪",
+      "mag": 12,
+      "reserve": 60,
+      "damage": 30,
+      "interval": 0.26,
+      "reload": 1.4,
+      "speed": 1700,
+      "spread": 0.013,
+      "recoil": 0.019,
+      "maxRecoil": 0.13,
+      "pellets": 1,
+      "range": 1050,
+      "barrel": 27,
+      "color": "#c5d4c5",
+      "head": 3.2,
+      "tier": "field",
+      "kind": "pistol"
+    },
+    {
+      "id": "AK47",
+      "label": "AK-47",
+      "desc": "突击步枪",
+      "mag": 30,
+      "reserve": 120,
+      "damage": 36,
+      "interval": 0.105,
+      "reload": 2.15,
+      "speed": 2100,
+      "spread": 0.018,
+      "recoil": 0.024,
+      "maxRecoil": 0.25,
+      "pellets": 1,
+      "range": 1400,
+      "barrel": 39,
+      "color": "#d9b27d",
+      "head": 3,
+      "tier": "field",
+      "kind": "rifle"
+    },
+    {
+      "id": "MP6",
+      "label": "MP6",
+      "desc": "高射速冲锋枪",
+      "mag": 35,
+      "reserve": 140,
+      "damage": 18,
+      "interval": 0.062,
+      "reload": 1.65,
+      "speed": 1650,
+      "spread": 0.026,
+      "recoil": 0.009,
+      "maxRecoil": 0.13,
+      "pellets": 1,
+      "range": 850,
+      "barrel": 31,
+      "color": "#9fbfc6",
+      "head": 3,
+      "tier": "field",
+      "kind": "smg"
+    },
+    {
+      "id": "AWP",
+      "label": "AWP",
+      "desc": "自动瞄准 · 仅 5 发",
+      "mag": 5,
+      "reserve": 0,
+      "damage": 115,
+      "interval": 1.38,
+      "reload": 2.7,
+      "speed": 4200,
+      "spread": 0.065,
+      "recoil": 0.045,
+      "maxRecoil": 0.14,
+      "pellets": 1,
+      "range": 1900,
+      "barrel": 47,
+      "color": "#bfd38d",
+      "head": 3,
+      "tier": "rare",
+      "kind": "dmr",
+      "limited": true
+    },
+    {
+      "id": "Shotgun",
+      "label": "SHOTGUN",
+      "desc": "泵动霰弹枪",
+      "mag": 6,
+      "reserve": 30,
+      "damage": 15,
+      "interval": 0.9,
+      "reload": 2.4,
+      "speed": 1450,
+      "spread": 0.16,
+      "recoil": 0.035,
+      "maxRecoil": 0.16,
+      "pellets": 8,
+      "range": 540,
+      "barrel": 38,
+      "color": "#d6ad94",
+      "head": 2,
+      "tier": "field",
+      "kind": "shotgun"
+    },
+    {
+      "id": "M4A1",
+      "label": "M4A1",
+      "desc": "均衡步枪 · 低后坐力",
+      "mag": 30,
+      "reserve": 120,
+      "damage": 27,
+      "interval": 0.095,
+      "reload": 1.8,
+      "speed": 2200,
+      "spread": 0.009,
+      "recoil": 0.009,
+      "maxRecoil": 0.09,
+      "pellets": 1,
+      "range": 1250,
+      "barrel": 39,
+      "color": "#8cdbc5",
+      "head": 2.7,
+      "kind": "rifle",
+      "tier": "field"
+    },
+    {
+      "id": "VECTOR",
+      "label": "VECTOR",
+      "desc": "近距冲锋枪 · 极高射速",
+      "mag": 25,
+      "reserve": 125,
+      "damage": 16,
+      "interval": 0.046,
+      "reload": 1.45,
+      "speed": 1600,
+      "spread": 0.022,
+      "recoil": 0.008,
+      "maxRecoil": 0.12,
+      "pellets": 1,
+      "range": 620,
+      "barrel": 29,
+      "color": "#8dd5ed",
+      "head": 2.5,
+      "kind": "smg",
+      "tier": "field"
+    },
+    {
+      "id": "DMR",
+      "label": "DMR-14",
+      "desc": "精确步枪 · 高单发伤害",
+      "mag": 10,
+      "reserve": 40,
+      "damage": 64,
+      "interval": 0.46,
+      "reload": 2.1,
+      "speed": 2800,
+      "spread": 0.005,
+      "recoil": 0.025,
+      "maxRecoil": 0.11,
+      "pellets": 1,
+      "range": 1650,
+      "barrel": 46,
+      "color": "#c5c2ed",
+      "head": 2.4,
+      "kind": "dmr",
+      "tier": "field"
+    },
+    {
+      "id": "RPK",
+      "label": "RPK-60",
+      "desc": "轻机枪 · 60 发压制火力",
+      "mag": 60,
+      "reserve": 180,
+      "damage": 29,
+      "interval": 0.12,
+      "reload": 3.1,
+      "speed": 2000,
+      "spread": 0.025,
+      "recoil": 0.017,
+      "maxRecoil": 0.21,
+      "pellets": 1,
+      "range": 1350,
+      "barrel": 44,
+      "color": "#e4bf85",
+      "head": 2.3,
+      "kind": "lmg",
+      "tier": "field"
+    },
+    {
+      "id": "RAIL",
+      "label": "极光 RAIL",
+      "desc": "空投专属 · 直线贯穿 3 个目标",
+      "mag": 6,
+      "reserve": 0,
+      "damage": 84,
+      "interval": 1.05,
+      "reload": 0,
+      "speed": 3600,
+      "spread": 0.003,
+      "recoil": 0.012,
+      "maxRecoil": 0.05,
+      "pellets": 1,
+      "range": 1700,
+      "barrel": 49,
+      "color": "#8eeced",
+      "head": 1.8,
+      "kind": "rail",
+      "tier": "airdrop",
+      "limited": true,
+      "pierce": 3
+    },
+    {
+      "id": "NOVA",
+      "label": "烈阳 NOVA",
+      "desc": "空投专属 · 范围爆炸，小心误伤自己",
+      "mag": 4,
+      "reserve": 0,
+      "damage": 78,
+      "interval": 1.15,
+      "reload": 0,
+      "speed": 720,
+      "spread": 0.012,
+      "recoil": 0.03,
+      "maxRecoil": 0.08,
+      "pellets": 1,
+      "range": 780,
+      "barrel": 36,
+      "color": "#ffbd7d",
+      "head": 1,
+      "kind": "launcher",
+      "tier": "airdrop",
+      "limited": true,
+      "blast": 100
+    },
+    {
+      "id": "CYCLONE",
+      "label": "飓风 CYCLONE",
+      "desc": "空投专属 · 三联扇形弹幕",
+      "mag": 24,
+      "reserve": 0,
+      "damage": 18,
+      "interval": 0.13,
+      "reload": 0,
+      "speed": 2100,
+      "spread": 0.006,
+      "recoil": 0.008,
+      "maxRecoil": 0.09,
+      "pellets": 3,
+      "range": 850,
+      "barrel": 41,
+      "color": "#e8a5db",
+      "head": 1.8,
+      "kind": "rotary",
+      "tier": "airdrop",
+      "limited": true,
+      "fan": 0.065
+    },
+    {
+      "id": "P90",
+      "label": "FN P90",
+      "kind": "smg",
+      "mag": 50,
+      "reserve": 250,
+      "damage": 19,
+      "interval": 0.066,
+      "reload": 2.9,
+      "pellets": 1,
+      "desc": "紧凑无托冲锋枪 · 顶置 50 发弹匣",
+      "tier": "field",
+      "color": "#acb7a3",
+      "range": 2400,
+      "spread": 0.05,
+      "recoil": 0.015,
+      "head": 2.4,
+      "pierce": 0,
+      "blast": 0,
+      "fan": 0,
+      "speed": 0,
+      "limited": false
+    },
+    {
+      "id": "MG3",
+      "label": "MG3",
+      "kind": "rifle",
+      "mag": 100,
+      "reserve": 300,
+      "damage": 27,
+      "interval": 0.075,
+      "reload": 6.2,
+      "pellets": 1,
+      "desc": "弹链供弹通用机枪 · 高射速 · 长换弹",
+      "tier": "field",
+      "color": "#acb7a3",
+      "range": 2400,
+      "spread": 0.05,
+      "recoil": 0.015,
+      "head": 2.4,
+      "pierce": 0,
+      "blast": 0,
+      "fan": 0,
+      "speed": 0,
+      "limited": false
+    },
+    {
+      "id": "M700",
+      "label": "M700 栓动狙击枪",
+      "kind": "dmr",
+      "mag": 5,
+      "reserve": 40,
+      "damage": 88,
+      "interval": 1.3,
+      "reload": 3.1,
+      "pellets": 1,
+      "desc": "重型枪管 · 每发拉栓 · 远距离精确射击",
+      "tier": "field",
+      "color": "#acb7a3",
+      "range": 2400,
+      "spread": 0.05,
+      "recoil": 0.015,
+      "head": 2.4,
+      "pierce": 0,
+      "blast": 0,
+      "fan": 0,
+      "speed": 0,
+      "limited": false
+    },
+    {
+      "id": "M1014",
+      "label": "M1014 半自动霰弹枪",
+      "kind": "shotgun",
+      "mag": 7,
+      "reserve": 56,
+      "damage": 12,
+      "interval": 0.27,
+      "reload": 4.4,
+      "pellets": 8,
+      "desc": "管式弹仓 · 半自动连续射击 · 逐发装填动作",
+      "tier": "field",
+      "color": "#acb7a3",
+      "range": 2400,
+      "spread": 0.05,
+      "recoil": 0.015,
+      "head": 2.4,
+      "pierce": 0,
+      "blast": 0,
+      "fan": 0,
+      "speed": 0,
+      "limited": false
+    }
+  ],
+  "difficulties": [
+    {
+      "id": "low",
+      "label": "低",
+      "count": 3,
+      "error": 0.15,
+      "reaction": [
+        0.7,
+        1
+      ],
+      "damage": 0.6,
+      "turn": 4,
+      "burst": [
+        0.18,
+        0.35
+      ],
+      "rest": [
+        0.65,
+        1
+      ],
+      "guns": [
+        "USP",
+        "MP6",
+        "USP"
+      ],
+      "description": "3 名敌人 · 较低准度 · USP / MP6 · 敌方伤害 60%"
+    },
+    {
+      "id": "medium",
+      "label": "中",
+      "count": 5,
+      "error": 0.09,
+      "reaction": [
+        0.4,
+        0.65
+      ],
+      "damage": 0.8,
+      "turn": 6,
+      "burst": [
+        0.25,
+        0.45
+      ],
+      "rest": [
+        0.4,
+        0.7
+      ],
+      "guns": [
+        "MP6",
+        "AK47",
+        "USP",
+        "Shotgun",
+        "MP6"
+      ],
+      "description": "5 名敌人 · 普通准度 · 冲锋枪 / 步枪 / 霰弹枪 · 敌方伤害 80%"
+    },
+    {
+      "id": "high",
+      "label": "高",
+      "count": 8,
+      "error": 0.045,
+      "reaction": [
+        0.25,
+        0.4
+      ],
+      "damage": 1,
+      "turn": 8,
+      "burst": [
+        0.3,
+        0.55
+      ],
+      "rest": [
+        0.25,
+        0.5
+      ],
+      "guns": [
+        "AK47",
+        "MP6",
+        "Shotgun",
+        "AWP",
+        "AK47",
+        "MP6",
+        "AK47",
+        "Shotgun"
+      ],
+      "description": "8 名敌人 · 高准度 · 步枪主力，加入 AWP · 敌方伤害 100%"
+    },
+    {
+      "id": "hell",
+      "label": "地狱",
+      "count": 12,
+      "error": 0.02,
+      "reaction": [
+        0.14,
+        0.25
+      ],
+      "damage": 1.1,
+      "turn": 11,
+      "burst": [
+        0.4,
+        0.7
+      ],
+      "rest": [
+        0.18,
+        0.35
+      ],
+      "guns": [
+        "AK47",
+        "AWP",
+        "AK47",
+        "Shotgun",
+        "AK47",
+        "MP6",
+        "AWP",
+        "AK47",
+        "Shotgun",
+        "AK47",
+        "AWP",
+        "AK47"
+      ],
+      "description": "12 名敌人 · 极高准度 · AK-47 / AWP 主力 · 敌方伤害 110%"
+    }
+  ],
+  "maps": [
+    {
+      "id": "sector07",
+      "name": "禁区仓库",
+      "code": "SECTOR 07",
+      "description": "琥珀灯光下的工业迷宫：货架窄巷、装卸带与侧翼维修通道。",
+      "floor": [
+        64,
+        72,
+        85
+      ],
+      "wall": "#8997a8",
+      "metal": "#ce843f",
+      "grass": "#465e55",
+      "walls": [
+        {
+          "x": 6,
+          "y": 2,
+          "w": 1,
+          "h": 5
+        },
+        {
+          "x": 6,
+          "y": 10,
+          "w": 1,
+          "h": 7
+        },
+        {
+          "x": 12,
+          "y": 1,
+          "w": 1,
+          "h": 4
+        },
+        {
+          "x": 12,
+          "y": 8,
+          "w": 1,
+          "h": 7
+        },
+        {
+          "x": 19,
+          "y": 4,
+          "w": 1,
+          "h": 5
+        },
+        {
+          "x": 19,
+          "y": 12,
+          "w": 1,
+          "h": 6
+        },
+        {
+          "x": 2,
+          "y": 8,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 8,
+          "y": 6,
+          "w": 4,
+          "h": 1
+        },
+        {
+          "x": 9,
+          "y": 16,
+          "w": 6,
+          "h": 1
+        },
+        {
+          "x": 15,
+          "y": 10,
+          "w": 4,
+          "h": 1
+        },
+        {
+          "x": 21,
+          "y": 6,
+          "w": 4,
+          "h": 1
+        },
+        {
+          "x": 22,
+          "y": 13,
+          "w": 5,
+          "h": 1
+        }
+      ],
+      "crates": [
+        {
+          "x": 3,
+          "y": 4,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "x": 9,
+          "y": 11,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "x": 16,
+          "y": 3,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "x": 16,
+          "y": 14,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "x": 23,
+          "y": 9,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "x": 23,
+          "y": 16,
+          "w": 1,
+          "h": 1
+        }
+      ],
+      "brush": [
+        {
+          "x": 2,
+          "y": 13,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 8,
+          "y": 3,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 14,
+          "y": 6,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 21,
+          "y": 10,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 9,
+          "y": 17,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 2,
+          "y": 2,
+          "w": 2,
+          "h": 1
+        }
+      ],
+      "water": [],
+      "pois": [
+        {
+          "name": "仓库",
+          "type": "arms",
+          "x": 9,
+          "y": 3
+        },
+        {
+          "name": "医务室",
+          "type": "med",
+          "x": 3,
+          "y": 6
+        },
+        {
+          "name": "维修间",
+          "type": "tools",
+          "x": 16,
+          "y": 6
+        },
+        {
+          "name": "通信站",
+          "type": "tech",
+          "x": 23,
+          "y": 16
+        }
+      ]
+    },
+    {
+      "id": "docks",
+      "name": "港区货场",
+      "code": "SECTOR 08",
+      "description": "蓝潮码头：北岸双栈桥、纵向集装箱长廊与南侧装卸场。",
+      "floor": [
+        103,
+        133,
+        143
+      ],
+      "wall": "#829aa9",
+      "metal": "#d78756",
+      "grass": "#4d8070",
+      "water": [
+        {
+          "x": 1,
+          "y": 1,
+          "w": 8,
+          "h": 2
+        },
+        {
+          "x": 11,
+          "y": 1,
+          "w": 6,
+          "h": 2
+        },
+        {
+          "x": 19,
+          "y": 1,
+          "w": 8,
+          "h": 2
+        }
+      ],
+      "walls": [
+        {
+          "x": 1,
+          "y": 1,
+          "w": 8,
+          "h": 2
+        },
+        {
+          "x": 11,
+          "y": 1,
+          "w": 6,
+          "h": 2
+        },
+        {
+          "x": 19,
+          "y": 1,
+          "w": 8,
+          "h": 2
+        },
+        {
+          "x": 3,
+          "y": 11,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "x": 16,
+          "y": 13,
+          "w": 1,
+          "h": 4
+        }
+      ],
+      "crates": [
+        {
+          "x": 5,
+          "y": 5,
+          "w": 2,
+          "h": 5
+        },
+        {
+          "x": 11,
+          "y": 6,
+          "w": 2,
+          "h": 5
+        },
+        {
+          "x": 17,
+          "y": 5,
+          "w": 2,
+          "h": 5
+        },
+        {
+          "x": 22,
+          "y": 7,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 7,
+          "y": 14,
+          "w": 6,
+          "h": 2
+        },
+        {
+          "x": 19,
+          "y": 14,
+          "w": 5,
+          "h": 2
+        }
+      ],
+      "brush": [
+        {
+          "x": 2,
+          "y": 13,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 7,
+          "y": 5,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 19,
+          "y": 5,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 9,
+          "y": 11,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 21,
+          "y": 17,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 13,
+          "y": 3,
+          "w": 2,
+          "h": 2
+        }
+      ],
+      "pois": [
+        {
+          "name": "海关办公室",
+          "type": "tech",
+          "x": 3,
+          "y": 4
+        },
+        {
+          "name": "军需堆场",
+          "type": "arms",
+          "x": 19,
+          "y": 6
+        },
+        {
+          "name": "急救站",
+          "type": "med",
+          "x": 10,
+          "y": 17
+        },
+        {
+          "name": "机修棚",
+          "type": "tools",
+          "x": 24,
+          "y": 11
+        }
+      ]
+    },
+    {
+      "id": "ruins",
+      "name": "荒废街区",
+      "code": "SECTOR 09",
+      "description": "落日旧城：十字主街、四处破损院落与车辆路障，绕楼包抄。",
+      "floor": [
+        155,
+        126,
+        108
+      ],
+      "wall": "#ca9e80",
+      "metal": "#717ea1",
+      "grass": "#818458",
+      "walls": [
+        {
+          "x": 4,
+          "y": 3,
+          "w": 6,
+          "h": 1
+        },
+        {
+          "x": 4,
+          "y": 3,
+          "w": 1,
+          "h": 4
+        },
+        {
+          "x": 9,
+          "y": 5,
+          "w": 1,
+          "h": 3
+        },
+        {
+          "x": 18,
+          "y": 3,
+          "w": 6,
+          "h": 1
+        },
+        {
+          "x": 23,
+          "y": 3,
+          "w": 1,
+          "h": 4
+        },
+        {
+          "x": 18,
+          "y": 6,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 4,
+          "y": 12,
+          "w": 1,
+          "h": 5
+        },
+        {
+          "x": 4,
+          "y": 16,
+          "w": 6,
+          "h": 1
+        },
+        {
+          "x": 8,
+          "y": 12,
+          "w": 2,
+          "h": 1
+        },
+        {
+          "x": 17,
+          "y": 13,
+          "w": 1,
+          "h": 4
+        },
+        {
+          "x": 17,
+          "y": 16,
+          "w": 7,
+          "h": 1
+        },
+        {
+          "x": 23,
+          "y": 12,
+          "w": 1,
+          "h": 3
+        }
+      ],
+      "crates": [
+        {
+          "x": 6,
+          "y": 9,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 16,
+          "y": 9,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 12,
+          "y": 4,
+          "w": 1,
+          "h": 2
+        },
+        {
+          "x": 13,
+          "y": 14,
+          "w": 1,
+          "h": 3
+        }
+      ],
+      "brush": [
+        {
+          "x": 2,
+          "y": 13,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 6,
+          "y": 4,
+          "w": 3,
+          "h": 3
+        },
+        {
+          "x": 10,
+          "y": 12,
+          "w": 2,
+          "h": 3
+        },
+        {
+          "x": 18,
+          "y": 4,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 20,
+          "y": 11,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 18,
+          "y": 17,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 2,
+          "y": 7,
+          "w": 2,
+          "h": 2
+        }
+      ],
+      "water": [],
+      "pois": [
+        {
+          "name": "废弃诊所",
+          "type": "med",
+          "x": 7,
+          "y": 5
+        },
+        {
+          "name": "公寓储藏室",
+          "type": "tech",
+          "x": 18,
+          "y": 6
+        },
+        {
+          "name": "军警岗亭",
+          "type": "arms",
+          "x": 22,
+          "y": 12
+        },
+        {
+          "name": "修理铺",
+          "type": "tools",
+          "x": 11,
+          "y": 16
+        }
+      ]
+    },
+    {
+      "id": "outpost",
+      "name": "山地哨站",
+      "code": "SECTOR 10",
+      "description": "青岚山谷：错落岩脊、曲折土径与林间营地，多条草丛侧翼。",
+      "floor": [
+        76,
+        114,
+        89
+      ],
+      "wall": "#88969d",
+      "metal": "#5b8a96",
+      "grass": "#427d55",
+      "walls": [
+        {
+          "x": 6,
+          "y": 3,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 8,
+          "y": 5,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 13,
+          "y": 2,
+          "w": 2,
+          "h": 4
+        },
+        {
+          "x": 19,
+          "y": 4,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 21,
+          "y": 6,
+          "w": 2,
+          "h": 3
+        },
+        {
+          "x": 5,
+          "y": 10,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 7,
+          "y": 12,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 13,
+          "y": 11,
+          "w": 2,
+          "h": 3
+        },
+        {
+          "x": 16,
+          "y": 14,
+          "w": 4,
+          "h": 2
+        },
+        {
+          "x": 23,
+          "y": 12,
+          "w": 2,
+          "h": 4
+        }
+      ],
+      "crates": [
+        {
+          "x": 3,
+          "y": 4,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 17,
+          "y": 2,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 10,
+          "y": 8,
+          "w": 2,
+          "h": 2
+        },
+        {
+          "x": 18,
+          "y": 9,
+          "w": 2,
+          "h": 2
+        }
+      ],
+      "brush": [
+        {
+          "x": 2,
+          "y": 13,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 3,
+          "y": 2,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 9,
+          "y": 4,
+          "w": 3,
+          "h": 1
+        },
+        {
+          "x": 16,
+          "y": 5,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 10,
+          "y": 11,
+          "w": 3,
+          "h": 2
+        },
+        {
+          "x": 20,
+          "y": 13,
+          "w": 2,
+          "h": 3
+        },
+        {
+          "x": 8,
+          "y": 16,
+          "w": 5,
+          "h": 2
+        }
+      ],
+      "water": [],
+      "pois": [
+        {
+          "name": "哨站军械库",
+          "type": "arms",
+          "x": 17,
+          "y": 3
+        },
+        {
+          "name": "野战医院",
+          "type": "med",
+          "x": 4,
+          "y": 12
+        },
+        {
+          "name": "雷达站",
+          "type": "tech",
+          "x": 23,
+          "y": 16
+        },
+        {
+          "name": "后勤营地",
+          "type": "tools",
+          "x": 10,
+          "y": 6
+        }
+      ]
+    }
+  ]
+}

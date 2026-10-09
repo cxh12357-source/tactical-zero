@@ -1,0 +1,1 @@
+{"name":"TacticalZero.EditTests","references":["TacticalZero.Runtime","TacticalZero.Editor"],"includePlatforms":["Editor"],"optionalUnityReferences":["TestAssemblies"]}

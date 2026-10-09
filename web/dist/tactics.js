@@ -1,0 +1,47 @@
+/* Shared, deterministic operations rules. The caller supplies authoritative actors and rewards. */
+(function(root,factory){const api=factory(typeof module==='object'?require('./world.js'):root.TZWorld);if(typeof module==='object')module.exports=api;else root.TZTactics=api})(typeof globalThis==='object'?globalThis:this,function(R){
+'use strict';
+const {W,World,distance,CONFIG:C}=R;
+const Classes=typeof module==='object'?require('./classes.js'):globalThis.TZClasses;
+const MODS={suppressor:{name:'消音器',detail:'枪声传播减半'},extended:{name:'扩容弹匣',detail:'容量 +50%，换弹慢 30%'},stock:{name:'轻型枪托',detail:'移动散射减少 45%'}};
+const cache=new Map();
+function gunStats(type,mod){if(!MODS[mod]||W[type].limited)return W[type];const key=type+mod;if(!cache.has(key)){const w={...W[type]};if(mod==='extended'){w.mag=Math.ceil(w.mag*1.5);w.reload*=1.3}w.moveSpread=mod==='stock'?.55:1;w.soundRange=mod==='suppressor'?310:620;cache.set(key,w)}return cache.get(key)}
+function route(world,start,end){const key=p=>Math.floor(p.y/64)*28+Math.floor(p.x/64),s=key(start),goal=key(end),queue=[s],prior=new Map([[s,null]]);for(let i=0;i<queue.length;i++){const n=queue[i];if(n===goal)break;for(const next of [n-28,n+28,n-1,n+1]){const x=next%28,y=Math.floor(next/28);if(!prior.has(next)&&!world.blocked(x,y)){prior.set(next,n);queue.push(next)}}}if(!prior.has(goal))return [];const path=[];for(let n=goal;n!==s;n=prior.get(n))path.push({x:(n%28+.5)*64,y:(Math.floor(n/28)+.5)*64});return path.reverse()}
+class Operations{
+ constructor(adapter){this.a=adapter;this.world=adapter.world;this.time=0;this.noises=[];this.serial=0;this.nextObjective=20;this.cycle=0;this.objective=null;this.darkUntil=0;this.crane=!!this.world.crane;const [x,y]=({sector07:[1056,608],docks:[928,800],ruins:[1056,736],outpost:[1024,512]})[this.world.map.id];const occupied=adapter.obstacles?.()||[];const point=this.world.floor.filter(p=>occupied.every(o=>distance(p,o)>90)).sort((a,b)=>distance(a,{x,y})-distance(b,{x,y}))[0]||this.world.nearest(x,y);this.mechanism={id:'mechanism',...point,kind:this.world.map.id,label:{sector07:'配电开关',docks:'吊机控制台',ruins:'街区警报',outpost:'雷达终端'}[this.world.map.id],readyAt:0,activeUntil:0,owner:null};}
+ actors(){return this.a.actors()}
+ group(p){return this.a.group?.(p)||p.id}
+ alive(p){return p.hp>0&&!p.downed&&p.connected!==false}
+ emit(p,kind,radius=400){this.noises.push({id:++this.serial,x:p.x,y:p.y,source:p.id,kind,weapon:kind==='shot'?(p.weapon||this.a.gun(p)?.type):undefined,radius,at:this.time});if(this.noises.length>48)this.noises.shift();this.a.noise?.(p,kind,radius)}
+ hear(p){if(!this.alive(p))return [];const result=this.noises.filter(n=>n.source!==p.id&&this.time-n.at<.8&&distance(n,p)<n.radius*(this.world.los(n,p)?1:.6)).map(n=>({id:n.id,kind:n.kind,...(n.weapon?{weapon:n.weapon}:{}),direction:Math.round(Math.atan2(n.y-p.y,n.x-p.x)/(Math.PI/4))*Math.PI/4}));const m=this.mechanism;if(m.kind==='outpost'&&m.activeUntil>this.time&&m.owner===this.group(p)){for(const target of this.actors())if(this.alive(target)&&this.group(target)!==this.group(p)&&distance(p,target)<720)result.push({id:'radar'+target.id+Math.floor(this.time),kind:'radar',direction:Math.round(Math.atan2(target.y-p.y,target.x-p.x)/(Math.PI/4))*Math.PI/4})}result.push(...Classes.signals(p,this.actors(),(a,b)=>this.group(a)===this.group(b),this.time));return result.slice(-8)}
+ startObjective(kind){const types=['intel','escort','beacon'];kind||=types[this.cycle++%3];const candidates=this.world.floor.filter(p=>distance(p,this.mechanism)>130&&(this.a.obstacles?.()||[]).every(o=>distance(p,o)>90));if(candidates.length<2){this.nextObjective=this.time+5;return}const start=candidates[Math.floor((this.cycle*97)%candidates.length)],end=candidates.reduce((best,p)=>distance(start,p)>distance(start,best)?p:best,start);this.objective={id:'objective'+(++this.serial),kind,x:start.x,y:start.y,start:{...start},end:{...end},expires:this.time+65,progress:0,carrier:null,group:null,contested:false};this.path=route(this.world,start,end);this.emit(start,'objective',900);this.a.notice?.({intel:'情报出现：携带到上传点，途中会暴露方位',escort:'护送运输车：靠近推进，敌人靠近时停止',beacon:'撤离信标：占领区域 8 秒，敌人可争夺'}[kind]);}
+ targets(p){const m=this.mechanism,list=[];if(m.readyAt<=this.time)list.push({...m,taskKind:'mechanism',duration:1.5});const o=this.objective;if(o?.kind==='intel'){if(!o.carrier)list.push({...o,taskKind:'intel',duration:.4,label:'拾取情报'});else if(o.carrier===p.id)list.push({...o.end,id:o.id,taskKind:'deliver',duration:1.5,label:'上传情报'})}return list.filter(t=>distance(p,t)<62&&this.world.los(p,t)).sort((a,b)=>distance(a,p)-distance(b,p))}
+ interact(p){const t=this.targets(p)[0];if(!t)return false;p.task=p.task?.id===t.id?null:{id:t.id,kind:t.taskKind,label:t.label,duration:t.duration,progress:0};return true}
+ install(p,mod){const gun=this.a.gun(p);if(!MODS[mod]||!gun||W[gun.type].limited||!(p.modStock>0)||p.reload>0)return false;p.task={kind:'mod',id:'mod',label:'安装'+MODS[mod].name,duration:1.8,progress:0,mod,weapon:gun.type,gun};return true}
+ taskTick(p,dt){const t=p.task;if(!t||t.kind==='revive')return;if(!this.alive(p)||p.moving>.1||p.input?.fire||p.firing){p.task=null;return}if(t.kind==='mod'){if(this.a.gun(p)!==t.gun||this.a.gun(p).type!==t.weapon||!(p.modStock>0)||p.reload>0){p.task=null;return}}else if(!this.targets(p).some(x=>x.id===t.id&&x.taskKind===t.kind)){p.task=null;return}t.progress+=dt;if(t.progress<t.duration)return;p.task=null;
+  if(t.kind==='mod'){const gun=this.a.gun(p);gun.mod=t.mod;const w=gunStats(gun.type,gun.mod);if(gun.ammo>w.mag){gun.reserve+=gun.ammo-w.mag;gun.ammo=w.mag}p.modStock--;this.emit(p,'tools',220);this.a.notice?.('已安装'+MODS[t.mod].name+' · 每把枪仅一个配件');}
+  else if(t.kind==='mechanism')this.activate(p);
+  else if(t.kind==='intel'&&this.objective&&!this.objective.carrier){this.objective.carrier=p.id;this.objective.group=this.group(p);this.emit(p,'intel',850)}
+  else if(t.kind==='deliver'&&this.objective?.carrier===p.id)this.complete(p);
+ }
+ activate(p){const m=this.mechanism;if(m.readyAt>this.time)return false;
+  if(m.kind==='docks'){const world=new World('docks',!this.crane),blocked=[...this.actors().filter(a=>a.hp>0||a.downed),...(this.a.obstacles?.()||[]),m];if(this.objective)blocked.push(this.objective,this.objective.end);if(blocked.some(a=>!world.stand(a.x,a.y,20))){this.a.notice?.('吊机落点被占用，稍后重试');return false}this.crane=!this.crane;this.world=world;this.a.geometry?.(world);if(this.objective?.kind==='escort')this.path=route(world,this.objective,this.objective.end);this.a.notice?.('集装箱已移动，通路发生变化');}
+  else if(m.kind==='sector07'){this.darkUntil=this.time+20;this.world.darkUntil=this.darkUntil;this.a.notice?.('电源切断 20 秒 · 干扰 NPC 远处侦察');}
+  else if(m.kind==='ruins'){this.a.notice?.('警报响起：附近敌人会听见动静');}
+  else this.a.notice?.('雷达已启动 12 秒 · 仅提示敌方方位');
+  m.owner=this.group(p);m.activeUntil=this.time+(m.kind==='sector07'?20:12);m.readyAt=this.time+35;this.emit(m,m.kind==='ruins'?'alarm':'machine',m.kind==='ruins'?1000:550);return true;
+ }
+ complete(p){if(!this.objective)return;const rewarded=this.a.reward(p,2,300);this.emit(p,'complete',700);this.a.notice?.(rewarded===false?'敌方夺取了目标，准备争夺下一处':'战场目标完成 · +2 目标分 / +300 物资价值');this.objective=null;this.nextObjective=this.time+12}
+ tick(dt){this.time+=dt;this.world.darkUntil=this.darkUntil;this.noises=this.noises.filter(n=>this.time-n.at<.8);const actors=this.actors();for(const p of actors){if(this.alive(p)&&!Classes.silent(p,this.time)&&p.moving>.2&&(p.nextFootstep||0)<=this.time){p.nextFootstep=this.time+.48;this.emit(p,'step',this.world.hidden(p)?120:250)}this.taskTick(p,dt)}
+  const m=this.mechanism;if(m.kind==='ruins'&&m.activeUntil>this.time&&(m.pulseAt||0)<=this.time){m.pulseAt=this.time+1.5;this.emit(m,'alarm',1000)}
+  if(!this.objective){if(this.time>=this.nextObjective)this.startObjective();return}const o=this.objective;if(this.time>=o.expires){this.objective=null;this.nextObjective=this.time+8;this.a.notice?.('战场目标超时，下一目标准备中');return}
+  if(o.kind==='intel'){if(o.carrier){const p=actors.find(p=>p.id===o.carrier);if(!p||!this.alive(p)){o.carrier=null;o.group=null}else{o.x=p.x;o.y=p.y;if((o.pulseAt||0)<=this.time){o.pulseAt=this.time+4;this.emit(p,'intel',1100)}}}return}
+  const near=actors.filter(p=>this.alive(p)&&distance(p,o)<(o.kind==='beacon'?110:140)&&this.world.los(p,o)),groups=new Set(near.map(p=>this.group(p)));o.contested=groups.size>1;
+  if(groups.size!==1){if(o.kind==='beacon'&&!groups.size)o.progress=Math.max(0,o.progress-dt*.3);return}const p=near[0],group=this.group(p);if(o.group!==group){o.group=group;o.progress=0}
+  if(o.kind==='beacon'){o.progress+=dt;if(o.progress>=8)this.complete(p)}
+  else{let left=dt*70;while(left>0&&this.path.length){const next=this.path[0],d=distance(o,next),step=Math.min(left,d);if(d>0){o.x+=(next.x-o.x)/d*step;o.y+=(next.y-o.y)/d*step}left-=step;if(d<=step+.001)this.path.shift();else break}o.progress=R.clamp(1-distance(o,o.end)/Math.max(1,distance(o.start,o.end)),0,1);if(!this.path.length)this.complete(p)}
+ }
+ snapshot(p){const o=this.objective;return {time:this.time,crane:this.crane,darkUntil:this.darkUntil,mechanism:{...this.mechanism},objective:o?{id:o.id,kind:o.kind,...(o.carrier?{}:{x:o.x,y:o.y}),end:{...o.end},expires:o.expires,progress:o.progress,contested:o.contested,carried:!!o.carrier,yours:o.carrier===p.id}:null,nextObjective:this.nextObjective,task:p.task?{kind:p.task.kind,label:p.task.label,progress:p.task.progress,duration:p.task.duration}:null}}
+}
+return {MODS,gunStats,route,Operations};
+});

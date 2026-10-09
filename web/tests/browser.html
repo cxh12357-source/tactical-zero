@@ -1,0 +1,36 @@
+<!doctype html><meta charset="utf-8"><title>Tactical Zero development QA</title>
+<style>body{margin:14px;background:#202626;color:#e5e9df;font:14px system-ui}button,select{padding:8px;margin:3px;background:#394c43;color:#fff;border:1px solid #819283}iframe{display:block;border:1px solid #8a9b87;margin-top:10px}output{display:block;white-space:pre-wrap;padding:10px}h1{font-size:18px}</style>
+<h1>Tactical Zero · 开发测试（不会发布）</h1>
+<label>横屏尺寸 <select id="size"><option>844x390</option><option>667x375</option><option>932x430</option><option>390x844</option></select></label>
+<label>安全区 <select id="inset"><option value="44,0,21">左 44 / 右 0 / 底 21</option><option value="0,44,21">左 0 / 右 44 / 底 21</option><option value="59,59,21">左右 59 / 底 21</option><option value="0,0,0">无刘海</option></select></label>
+<label>地图预览 <select id="previewMap"><option value="sector07">禁区仓库</option><option value="docks">港区货场</option><option value="ruins">荒废街区</option><option value="outpost">山地哨站</option></select></label><button id="grass">草丛隐蔽场景</button><button id="load">加载布局</button><button id="basic">移动 / 射击 / 换弹</button><button id="streak">连杀反馈</button><button id="events">精英 / 空投</button><button id="extract">撤离倒计时</button><button id="result">成功结算</button><button id="death">死亡结算</button><button id="stress">10 秒战斗压力测试</button><button id="share">测试分享降级</button><button id="card">检查战绩卡片</button>
+<output id="status" role="status">选择测试场景。</output><iframe id="gameFrame" title="手机游戏预览"></iframe>
+<img id="cardPreview" alt="生成的战绩卡片" style="display:none;width:288px;margin-top:12px"><script>
+const frame=document.getElementById('gameFrame'),status=document.getElementById('status');let source='';
+const run=code=>frame.contentWindow.eval(code);
+const report=text=>status.textContent=text;
+async function load(){
+ source||=await(await fetch('/')).text();const [w,h]=document.getElementById('size').value.split('x').map(Number),[l,r,b]=document.getElementById('inset').value.split(',');
+ frame.width=w;frame.height=h;
+ let fixture=source.replaceAll('env(safe-area-inset-left)',l+'px').replaceAll('env(safe-area-inset-right)',r+'px').replaceAll('env(safe-area-inset-bottom)',b+'px').replaceAll('env(safe-area-inset-top)','0px');
+ frame.onload=()=>{frame.contentWindow.addEventListener('error',e=>report('ERROR '+e.message));frame.contentWindow.addEventListener('unhandledrejection',e=>report('REJECTION '+e.reason));report('READY · '+w+'×'+h+' · 模拟安全区 '+l+'/'+r+'/'+b)};frame.srcdoc=fixture;
+}
+document.getElementById('load').onclick=load;
+const start=`selectedMap='sector07';selectedDifficulty='low';reset();unlock();player.shieldUntil=99999;`;
+const scenarios={
+ basic:start+`enemies.forEach(e=>e.cooldown=999);sticks.move.x=1;for(let i=0;i<30;i++)update(STEP);sticks.move.x=0;player.angle=0;player.cooldown=0;fire(player,true);reload();hud();render();'PASS · 移动和射击，换弹倒计时已启动'`,
+ streak:start+`for(let i=0;i<8;i++){const e=enemies[0];e.hp=10;damage(e,{damage:20,friendly:true},false,e.x,e.y)}hud();render();'PASS · DOMINATING ×8'`,
+ events:start+`triggerEvent('elite');triggerEvent('airdrop');const drop=airdrops[0];player.x=224;player.y=1056;drop.x=288;drop.y=1120;camera.x=player.x;camera.y=player.y;const e=enemies.find(e=>e.elite);e.x=324;e.y=1008;e.visible=true;e.cooldown=999;computeVision();hud();render();'PASS · 精英和空投已出现'`,
+ extract:start+`enemies.forEach(e=>e.hp=0);openExtraction();player.x=extraction.x;player.y=extraction.y;camera.x=player.x;camera.y=player.y;hud();render();'RUNNING · 停留 2.7 秒撤离'`,
+ result:start+`Object.assign(stats,{kills:26,eliteKills:3,fired:100,hits:42,headshots:8,bestStreak:8,stage:3,weaponsPicked:5,weaponUse:{AK47:71,USP:29},damageTaken:94,healed:60});kills=26;headKills=8;stage=3;time=277;finish(true);render();'PASS · EXTRACTED / 全量统计'`,
+ death:start+`stats.kills=4;stats.fired=30;stats.hits=11;stats.damageTaken=100;time=72;player.hp=0;finish(false);render();'PASS · KIA / 重开可用'`
+};
+for(const [id,code] of Object.entries(scenarios))document.getElementById(id).onclick=()=>{try{report(run(code))}catch(e){report('FAIL '+e.stack)}};
+document.getElementById('stress').onclick=()=>{
+ report('RUNNING · 10 秒');run(`selectedDifficulty='hell';reset();player.shieldUntil=9999;player.infiniteUntil=9999;equip('MP6');for(let i=0;i<20;i++)spawnEnemy(true);sticks.aim.x=1;const qaStart=performance.now();let qaFrames=0;function qaSample(){qaFrames++;if(performance.now()-qaStart<10000&&running){requestAnimationFrame(qaSample);return}parent.document.getElementById('status').textContent='DONE · callbacks '+(qaFrames*1000/(performance.now()-qaStart)).toFixed(1)+' Hz / '+$('fps').textContent+' / enemies '+aliveCount()+' / bullets '+bullets.length+' / particles '+particles.length+' / '+$('performanceInfo').textContent;pauseGame()}requestAnimationFrame(qaSample);`)
+};
+document.getElementById('share').onclick=async()=>{try{const result=await run(`(async()=>{let payload=null;Object.defineProperty(navigator,'share',{configurable:true,value:undefined});Object.defineProperty(navigator,'clipboard',{configurable:true,value:{writeText:async text=>payload=text}});await shareResult();return payload&&$('shareStatus').textContent})()`);report(result||'请先加载结算场景')}catch(e){report('FAIL '+e)}};
+document.getElementById('grass').onclick=()=>{try{report(run(`selectedMap=parent.document.getElementById('previewMap').value;selectedDifficulty='low';reset();player.x=160;player.y=864;camera.x=player.x;camera.y=player.y;const qaEnemy=enemies[0];for(let i=0;i<500;i++){const p=randomFloor(),d=dist(player,p);if(d>80&&d<210&&!inGrass(p.x,p.y)&&los(player,p)){qaEnemy.x=p.x;qaEnemy.y=p.y;break}}qaEnemy.sees=true;qaEnemy.think=0;qaEnemy.lastKnown={x:224,y:1056};enemyUpdate(qaEnemy,STEP);computeVision();hud();render();activeMap.name+' / HIDDEN '+playerHidden()+' / ENEMY SEES '+qaEnemy.sees`))}catch(e){report('FAIL '+e)}};
+let cardURL;document.getElementById('card').onclick=()=>{const file=run('shareFile');if(!file){report('请先生成结算');return}if(cardURL)URL.revokeObjectURL(cardURL);cardURL=URL.createObjectURL(file);const img=document.getElementById('cardPreview');img.src=cardURL;img.style.display='block';report('PNG · '+file.size+' bytes · '+file.type)};
+load();
+</script>

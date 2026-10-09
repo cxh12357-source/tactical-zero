@@ -1,0 +1,1 @@
+{"name":"TacticalZero.Editor","rootNamespace":"TacticalZero.Editor","references":["TacticalZero.Runtime","Unity.InputSystem","Unity.AI.Navigation","Unity.RenderPipelines.Universal.Runtime","Unity.RenderPipelines.Core.Runtime","Unity.ugui"],"includePlatforms":["Editor"]}

@@ -1,0 +1,53 @@
+{
+  "unity_version": "6000.6.0f1",
+  "game_version": "0.18.0",
+  "historical_validation": {
+    "unity_playmode": {
+      "passed": 23,
+      "total": 23,
+      "spawn_checks": 750
+    },
+    "webgl_offline": {
+      "cached_assets": 45,
+      "errors": 0,
+      "failed_requests": 0
+    },
+    "pwa_update": {
+      "passed": true,
+      "scope": "Desktop Edge two-window lifecycle with small fixture payload"
+    },
+    "npc_ceiling_regression": {
+      "intersections_before": 19,
+      "intersections_after": 0
+    }
+  },
+  "limitations": [
+    "Original validation records belong to the complete private local Unity project, not a fresh build from this source snapshot.",
+    "No physical iPhone continuous-play test or human headset listening test.",
+    "Performance improvement was not consistent across all maps.",
+    "A later shader-related crash was reported; compatibility testing did not establish a complete fix.",
+    "Unity scenes and heavy meshes are excluded; the web prototype is a separate runnable implementation."
+  ],
+  "public_snapshot_validation": {
+    "checked_date": "2026-10-09",
+    "syntax_controls": "passed",
+    "map_validation": {
+      "maps": 4,
+      "floors": 15,
+      "spawn_zones": 120,
+      "errors": 0
+    },
+    "full_web_test_suite": {
+      "test_files": 18,
+      "exit_code": 0
+    },
+    "mobile_rebuild": "passed; current offline package regenerated",
+    "http_smoke": {
+      "health": 200,
+      "index": 200,
+      "script_resources": 19,
+      "all_script_statuses": 200
+    },
+    "unity_fresh_build": "not attempted; complete models and scenes excluded"
+  }
+}
